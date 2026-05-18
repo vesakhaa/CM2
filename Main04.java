@@ -5,7 +5,12 @@ public class Main04 {
         Scanner sc = new Scanner(System.in);
         DLLAntrian04 antrian = new DLLAntrian04();
         DLLPesanan04 pesanan = new DLLPesanan04();
-        
+
+        antrian.enQueue("Ainra", "08224500000");
+        antrian.enQueue("Danra", "08224511111");
+        antrian.enQueue("Sanri", "08224522222");
+        antrian.enQueue("Vania", "08422234556");
+
         int menu;
         do {
             System.out.println("=========================================");
