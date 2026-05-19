@@ -1,9 +1,9 @@
 public class DLLAntrian04 {
     Pembeli04 head, tail;
-    int CurrentAntrian = 1;
+    int currentQueueNumber = 1;
 
-    public void enQueue(String nama, String noHP) {
-        Pembeli04 newNode = new Pembeli04(CurrentAntrian++, nama, noHP);
+    public void enqueue(String nama, String hp) {
+        Pembeli04 newNode = new Pembeli04(currentQueueNumber++, nama, hp);
         if (head == null) {
             head = tail = newNode;
         } else {
@@ -15,13 +15,13 @@ public class DLLAntrian04 {
     }
 
     public void printQueue() {
-        if (head==null){
-            System.out.println("Antrian Kosong");
+        if (head == null) {
+            System.out.println("Antrian kosong.");
             return;
         }
-        System.out.println("===============================");
+        System.out.println("=========================================");
         System.out.println("Daftar Antrian Pembeli");
-        System.out.println("===============================");
+        System.out.println("=========================================");
         System.out.printf("%-15s %-15s %-15s\n", "No Antrian", "Nama", "No HP");
         Pembeli04 current = head;
         while (current != null) {
@@ -30,17 +30,44 @@ public class DLLAntrian04 {
         }
     }
 
-    public Pembeli04 deQueue() {
+    public Pembeli04 removeByNoAntrian(int targetNo) {
         if (head == null) {
             return null;
         }
-        Pembeli04 removedNode = head;
-        head = head.next;
-        if (head != null) {
-            head.prev = null;
-        } else {
-            tail = null;
+
+        Pembeli04 current = head;
+
+        while (current != null && current.noAntrian != targetNo) {
+            current = current.next;
         }
-        return removedNode;
+
+        if (current == null) {
+            return null;
+        }
+
+        if (current == head) {
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            } else {
+                tail = null;
+            }
+        }
+
+        else if (current == tail) {
+            tail = tail.prev;
+            if (tail != null) {
+                tail.next = null;
+            }
+        }
+
+        else {
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+        }
+        current.next = null;
+        current.prev = null;
+
+        return current; 
     }
 }

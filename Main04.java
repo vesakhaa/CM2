@@ -6,10 +6,12 @@ public class Main04 {
         DLLAntrian04 antrian = new DLLAntrian04();
         DLLPesanan04 pesanan = new DLLPesanan04();
 
-        antrian.enQueue("Ainra", "08224500000");
-        antrian.enQueue("Danra", "08224511111");
-        antrian.enQueue("Sanri", "08224522222");
-        antrian.enQueue("Vania", "08422234556");
+        // Data dummy untuk mempermudah pengujian awal
+        antrian.enqueue("Ainra", "08224500000");
+        antrian.enqueue("Danra", "08224511111");
+        antrian.enqueue("Sanri", "08224522222");
+        antrian.enqueue("Vania", "08422234556");
+        System.out.println("\n[Sistem]: Data awal antrean telah di-generate secara otomatis.\n");
 
         int menu;
         do {
@@ -18,7 +20,7 @@ public class Main04 {
             System.out.println("=========================================");
             System.out.println("1. Tambah Antrian");
             System.out.println("2. Cetak Antrian");
-            System.out.println("3. Hapus Antrian dan Pesan");
+            System.out.println("3. Hapus Antrian dan Pesan (Pilih Nomor)");
             System.out.println("4. Laporan Pesanan");
             System.out.println("0. Keluar");
             System.out.print("Pilih menu : ");
@@ -31,14 +33,27 @@ public class Main04 {
                     String nama = sc.nextLine();
                     System.out.print("No HP        : ");
                     String hp = sc.nextLine();
-                    antrian.enQueue(nama, hp);
+                    antrian.enqueue(nama, hp);
                     break;
                 case 2:
                     antrian.printQueue();
                     break;
                 case 3:
-                    Pembeli04 pembeliDipanggil = antrian.deQueue();
+                    if (antrian.head == null) {
+                        System.out.println("Antrian saat ini kosong!");
+                        break;
+                    }
+                
+                    antrian.printQueue();
+                    
+                    System.out.print("\nMasukkan Nomor Antrian yang ingin dihapus/dilayani: ");
+                    int noPilihan = sc.nextInt();
+                    sc.nextLine(); 
+                    
+                    Pembeli04 pembeliDipanggil = antrian.removeByNoAntrian(noPilihan);
+                    
                     if (pembeliDipanggil != null) {
+                        System.out.println("\n--- Input Pesanan untuk " + pembeliDipanggil.namaPembeli + " ---");
                         System.out.print("Kode Pesanan : ");
                         int kode = sc.nextInt();
                         sc.nextLine();
@@ -49,9 +64,9 @@ public class Main04 {
                         sc.nextLine();
                         
                         pesanan.addPesanan(kode, namaPesanan, harga);
-                        System.out.println(pembeliDipanggil.namaPembeli + " telah memesan " + namaPesanan);
+                        System.out.println("\n[Sukses]: " + pembeliDipanggil.namaPembeli + " (No Antrian " + noPilihan + ") telah dihapus dari antrean dan memesan " + namaPesanan);
                     } else {
-                        System.out.println("Antrian saat ini kosong!");
+                        System.out.println("Nomor antrean " + noPilihan + " tidak ditemukan!");
                     }
                     break;
                 case 4:
